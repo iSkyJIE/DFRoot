@@ -2,16 +2,21 @@ plugins {
     id("com.android.application")
 }
 
+val dfrootVersionName = providers.gradleProperty("DFROOT_VERSION_NAME").orElse("1.0.261001")
+val dfrootVersionCode = providers.gradleProperty("DFROOT_VERSION_CODE").map { it.toInt() }.orElse(261001)
+
 android {
     namespace = "df.root"
     compileSdk = 36
+    buildToolsVersion = "35.0.0"
+    ndkVersion = "27.0.12077973"
 
     defaultConfig {
         applicationId = "df.root"
         minSdk = 32
         targetSdk = 36
-        versionCode = 2
-        versionName = "2.0"
+        versionCode = dfrootVersionCode.get()
+        versionName = dfrootVersionName.get()
 
         ndk {
             abiFilters += listOf("arm64-v8a")
@@ -50,6 +55,7 @@ android {
     externalNativeBuild {
         cmake {
             path("src/main/jni/CMakeLists.txt")
+            version = "3.22.1"
         }
     }
 
